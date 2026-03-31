@@ -135,16 +135,17 @@ export const formatDate = (dateString: string): string => {
 // Calculate total duration from selected services
 export const calculateTotalDuration = (services: BookingService[]): number => {
   return services.reduce((total, service) => {
-    // Parse duration string (e.g., "1h 30min" -> 90)
-    const durationStr = service.duration.toLowerCase();
     let minutes = 0;
-
-    const hourMatch = durationStr.match(/(\d+)h/);
-    const minMatch = durationStr.match(/(\d+)min/);
-
-    if (hourMatch) minutes += parseInt(hourMatch[1]) * 60;
-    if (minMatch) minutes += parseInt(minMatch[1]);
-
+    if (typeof service.duration === 'number') {
+      minutes = service.duration;
+    } else {
+      const durationStr = service.duration.toLowerCase();
+      const hourMatch = durationStr.match(/(\d+)h/);
+      const minMatch = durationStr.match(/(\d+)min/);
+      if (hourMatch) minutes += parseInt(hourMatch[1]) * 60;
+      if (minMatch) minutes += parseInt(minMatch[1]);
+      if (!hourMatch && !minMatch) minutes = parseInt(durationStr) || 0;
+    }
     return total + minutes;
   }, 0);
 };
@@ -152,9 +153,13 @@ export const calculateTotalDuration = (services: BookingService[]): number => {
 // Calculate total price from selected services
 export const calculateTotalPrice = (services: BookingService[]): number => {
   return services.reduce((total, service) => {
-    // Parse price string (e.g., "€120" -> 120, "from €120" -> 120)
-    const priceStr = service.price.replace(/[^\d.]/g, '');
-    const price = parseFloat(priceStr) || 0;
+    let price = 0;
+    if (typeof service.price === 'number') {
+      price = service.price;
+    } else {
+      const priceStr = service.price.replace(/[^\d.]/g, '');
+      price = parseFloat(priceStr) || 0;
+    }
     return total + price;
   }, 0);
 };
