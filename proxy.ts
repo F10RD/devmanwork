@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const DEMO_SECRET = process.env.DEMO_SECRET ?? 'byfiord-demo'
 const MAIN_SITE = 'https://byfiord.dev'
 
-export function middleware(request: NextRequest) {  // ← zmień z proxy na middleware
+export function proxy(request: NextRequest) {  // ← proxy, nie middleware
   const cookie = request.cookies.get('demo_access')?.value
 
   if (cookie !== DEMO_SECRET) {
