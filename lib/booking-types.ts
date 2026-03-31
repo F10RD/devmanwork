@@ -41,6 +41,8 @@ export type BusinessHours = {
 
 export type BookingConfig = {
   businessName: string;
+  businessEmail?: string; 
+  layout?: string; 
   services: BookingService[];
   teamMembers: TeamMember[];
   businessHours: BusinessHours[];
