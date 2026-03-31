@@ -2,8 +2,9 @@ export type BookingService = {
   id: string;
   name: string;
   category: string;
-  duration: string;
-  price: string;
+  duration: number | string;
+  price: number | string;
+  description?: string;   // ← dodaj tę linię
 };
 
 export type TeamMember = {
